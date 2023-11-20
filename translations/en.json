@@ -1,0 +1,11 @@
+{
+  "nav": {
+    "message": "Choose a language."
+  },
+  "views": {
+    "home": {
+      "title": "Hello world!",
+      "body": "This site should be now in English, you should be able to read this text, if you understand English."
+    }
+  }
+}
