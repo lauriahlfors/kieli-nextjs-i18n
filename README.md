@@ -1,6 +1,6 @@
 # Internationalization (i18n) in Next.js 14 App router.
 
-## Next.js 14 project implementing translation functionality, without any i18n libraries to the app router.
+## A Next.js 14 project implementing customizable i18n functionality to the app router, without i18n libraries.
 
 - Use .json files to create different translations.
 - Generative TypeScript typing for the created default translation, enhancing DX.
