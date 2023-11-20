@@ -1,19 +1,35 @@
+import '@/app/globals.css';
+import Nav from '@/components/nav';
+import { Locale, i18nConfig } from '@/i18n';
+import { getTranslation } from '@/lib/i18n/loadTranslations';
 import { GeistSans } from 'geist/font/sans';
 import type { Metadata } from 'next';
-import './@/app/globals.css';
 
 export const metadata: Metadata = {
   title: 'Next.js 14 i18n',
 };
 
-export default function RootLayout({
+export async function generateStaticParams() {
+  return i18nConfig.locales.map((locale) => ({ locale: locale }));
+}
+
+export default async function RootLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: {
+    locale: Locale;
+  };
 }) {
+  const t = await getTranslation(params.locale);
+
   return (
-    <html lang="en" className={GeistSans.className}>
-      <body>{children}</body>
+    <html lang={params.locale} className={GeistSans.className}>
+      <body>
+        <Nav t={t} />
+        <main className="px-8 pt-16 lg:px-96">{children}</main>
+      </body>
     </html>
   );
 }
