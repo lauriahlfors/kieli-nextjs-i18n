@@ -30,7 +30,7 @@ npm run dev
 
 ## How to use and add translations to the project.
 
-1. Create a new locale.json file inside the /translations directory that follows the same nested key structure as the specified default locale file (`en.json` by default).
+1. Create a new locale.json file inside the `@/translations` directory that follows the same nested key structure, as specified in the default locale file (`en.json` by default).
 
 2. Add the new locale.json to be loaded in the translations const found in `@/lib/i18n/loadTranslation.ts`.
 
