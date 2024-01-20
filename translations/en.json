@@ -1,6 +1,8 @@
 {
   "nav": {
-    "message": "Choose a language."
+    "locale-selector": {
+      "message": "Choose a language."
+    }
   },
   "views": {
     "home": {
