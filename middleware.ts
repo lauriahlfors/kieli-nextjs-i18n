@@ -1,48 +1,26 @@
-import { match } from '@formatjs/intl-localematcher';
-import Negotiator from 'negotiator';
 import { NextRequest, NextResponse } from 'next/server';
 import { Locale, i18nConfig } from './i18n';
-
-function getBestMatchingUserLocale(request: NextRequest) {
-  let userHeaders: Record<string, string> = {};
-
-  request.headers.forEach(
-    (headerValue, headerKey) => (userHeaders[headerKey] = headerValue)
-  );
-
-  const userLocales = new Negotiator({ headers: userHeaders }).languages();
-
-  const appLocales: string[] = [];
-  i18nConfig.locales.forEach((locale: Locale) => {
-    appLocales.push(locale);
-  });
-
-  const bestMatchingLocale = match(
-    userLocales,
-    appLocales,
-    i18nConfig.defaultLocale
-  );
-
-  return bestMatchingLocale;
-}
+import { getMatchingLocale } from './lib/i18n/getMatchingLocale';
 
 export default function middleware(request: NextRequest) {
-  const pathname = request.nextUrl.pathname;
+  // Internationalization.
 
-  console.log(pathname);
-
-  const isLocaleFound: boolean = i18nConfig.locales.every(
+  // Loop through available locales in i18n config, set to true when
+  // iterated locale is not found in current request url.
+  const localeNotFound: boolean = i18nConfig.locales.every(
     (locale: Locale) =>
-      !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
+      !request.nextUrl.pathname.startsWith(`/${locale}/`) &&
+      request.nextUrl.pathname !== `/${locale}`
   );
 
-  console.log(isLocaleFound);
+  // Locale not found in request url, redirect to matched locale url.
+  if (localeNotFound) {
+    // Get matching locale for user.
+    const newLocale: Locale = getMatchingLocale(request);
 
-  if (isLocaleFound) {
-    console.log('Locale not found');
-    const locale = getBestMatchingUserLocale(request);
+    // Return new url redirect and redirect user to correct locale url.
     return NextResponse.redirect(
-      new URL(`/${locale}/${pathname}`, request.url)
+      new URL(`/${newLocale}/${request.nextUrl.pathname}`, request.url)
     );
   }
 }

@@ -1,11 +1,13 @@
 {
   "nav": {
-    "message": "Valitse kieli."
+    "locale-selector": {
+      "message": "Valitse kieli."
+    }
   },
   "views": {
     "home": {
       "title": "Heippa maailma!",
-      "body": "Tämän sivun pitäisi olla nyt suomeksi, sinun pitäisi pystyä lukemaan tämä teksti, jos symmärrät suomea."
+      "body": "Tämän sivun pitäisi olla nyt suomeksi, sinun pitäisi pystyä lukemaan tämä teksti, jos ymmärrät suomea."
     }
   }
 }

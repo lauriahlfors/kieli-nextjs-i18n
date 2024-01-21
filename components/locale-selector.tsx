@@ -1,7 +1,7 @@
 'use client';
 
 import { i18nConfig } from '@/i18n';
-import redirectPathname from '@/lib/i18n/redirectPathname';
+import redirectToLocale from '@/lib/i18n/redirectToLocale';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
@@ -42,7 +42,7 @@ export default function LocaleSelector({ message }: Props) {
             <ul className="flex w-full flex-col divide-y divide-neutral-200">
               {i18nConfig.locales.map((locale, index) => {
                 return (
-                  <Link key={index} href={redirectPathname(locale, pathname)}>
+                  <Link key={index} href={redirectToLocale(locale, pathname)}>
                     <li className="flex w-full flex-col items-start justify-center px-3 py-1 hover:bg-neutral-100">
                       <h2 className="text-md font-medium text-neutral-950">
                         {localeInfo[locale].native}
@@ -65,19 +65,19 @@ export default function LocaleSelector({ message }: Props) {
 function GlobeIcon() {
   return (
     <>
-      {/* Globe SVG icon, sourced from: https://heroicons.com/ */}
+      {/* Trabslation SVG icon, sourced from: https://heroicons.com/ */}
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
-        strokeWidth={'1.5'}
+        strokeWidth={1.5}
         stroke="currentColor"
-        className="h-8 w-8 stroke-neutral-900"
+        className="h-6 w-6"
       >
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
-          d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418"
+          d="m10.5 21 5.25-11.25L21 21m-9-3h7.5M3 5.621a48.474 48.474 0 0 1 6-.371m0 0c1.12 0 2.233.038 3.334.114M9 5.25V3m3.334 2.364C11.176 10.658 7.69 15.08 3 17.502m9.334-12.138c.896.061 1.785.147 2.666.257m-4.589 8.495a18.023 18.023 0 0 1-3.827-5.802"
         />
       </svg>
     </>
