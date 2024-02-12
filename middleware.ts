@@ -1,28 +1,61 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { Locale, i18nConfig } from './i18n';
+import { Locale, cookieName, i18nConfig } from './i18n';
 import { getMatchingLocale } from './lib/i18n/getMatchingLocale';
 
 export default function middleware(request: NextRequest) {
-  // Internationalization.
+  // Extract necessary properties from the request object
+  const { cookies, nextUrl } = request;
 
-  // Loop through available locales in i18n config, set to true when
-  // iterated locale is not found in current request url.
-  const localeNotFound: boolean = i18nConfig.locales.every(
-    (locale: Locale) =>
-      !request.nextUrl.pathname.startsWith(`/${locale}/`) &&
-      request.nextUrl.pathname !== `/${locale}`
-  );
+  // Retrieve locale from cookie, if present
+  const cookieLocale = cookies.get(cookieName)?.value;
 
-  // Locale not found in request url, redirect to matched locale url.
-  if (localeNotFound) {
-    // Get matching locale for user.
-    const newLocale: Locale = getMatchingLocale(request);
+  // Check if the locale from the cookie is valid
+  const validateCookieLocale =
+    cookieLocale && i18nConfig.locales.includes(cookieLocale as Locale);
 
-    // Return new url redirect and redirect user to correct locale url.
-    return NextResponse.redirect(
-      new URL(`/${newLocale}/${request.nextUrl.pathname}`, request.url)
+  // Extract locale from the URL
+  const localeFromUrl = nextUrl.pathname.split('/')[1];
+
+  // Check if the locale from the URL is valid
+  const isLocaleInUrl = i18nConfig.locales.includes(localeFromUrl as Locale);
+
+  // If the locale from the URL is not valid, redirect to a valid locale URL
+  if (!isLocaleInUrl) {
+    let redirectLocale: Locale;
+
+    // Determine which locale to redirect to
+    if (validateCookieLocale) {
+      // If there is a valid locale in the cookie, redirect to that locale
+      redirectLocale = cookieLocale as Locale;
+    } else {
+      // Otherwise, determine a matching locale
+      redirectLocale = getMatchingLocale(request);
+    }
+
+    // Construct the redirect URL with the appropriate locale
+    const redirectUrl = new URL(
+      `/${redirectLocale}/${nextUrl.pathname}`,
+      request.url
     );
+
+    // Create a response object with the redirect URL
+    const response = NextResponse.redirect(redirectUrl);
+
+    // Set the new locale in the response cookie
+    response.cookies.set(cookieName, redirectLocale);
+
+    // Return the response to perform the redirect
+    return response;
   }
+
+  // If the locale from the URL is valid, proceed to the next middleware
+  const response = NextResponse.next();
+
+  // Set the locale from the URL in the response cookie
+  response.cookies.set(cookieName, localeFromUrl);
+
+  // Return the response to continue with the request handling
+  return response;
 }
 
 export const config = {
