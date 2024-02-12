@@ -1,3 +1,4 @@
+export const cookieName = 'current-cookie-locale';
 export const i18nConfig = {
   defaultLocale: 'en',
   locales: ['en', 'fi'],
