@@ -2,8 +2,9 @@ import { Locale, i18nConfig } from '@/i18n';
 import { ObjectKeys } from '@/lib/utils/objectKeys';
 
 // Contains functions to import translation .json files asynchrounously for specified locales.
+const defaultLoader = () => import('@/translations/en.json').then((module) => module.default);
 const translations = {
-  en: () => import('@/translations/en.json').then((module) => module.default),
+  en: defaultLoader,
   fi: () => import('@/translations/fi.json').then((module) => module.default),
 };
 
@@ -24,5 +25,8 @@ export default async function loadTranslation(
   locale: Locale
 ): Promise<Translation> {
   // Invoke a call to translations corresponding to a given locale key.
-  return translations[locale]();
+  if (translations[locale]) {
+    return translations[locale]();
+  }
+  return defaultLoader();
 }
