@@ -9,12 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "geist": "^1.1.0",
-    "next": "14.0.1",
-    "react": "^18",
-    "react-dom": "^18",
     "@formatjs/intl-localematcher": "^0.5.0",
-    "negotiator": "^0.6.3"
+    "geist": "^1.1.0",
+    "negotiator": "^0.6.3",
+    "next": "^14.2.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@types/negotiator": "^0.6.3",
@@ -23,7 +23,7 @@
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
     "eslint": "^8",
-    "eslint-config-next": "14.0.1",
+    "eslint-config-next": "^14.2.5",
     "postcss": "^8",
     "prettier": "^3.1.0",
     "prettier-plugin-organize-imports": "^3.2.3",
