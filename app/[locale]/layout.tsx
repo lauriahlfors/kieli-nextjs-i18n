@@ -1,7 +1,7 @@
 import '@/app/globals.css';
 import Nav from '@/components/nav';
 import { Locale, i18nConfig } from '@/i18n';
-import getTranslation from '@/lib/i18n/getTranslation';
+import { getTranslation } from '@/lib/i18n/getTranslation';
 import { GeistSans } from 'geist/font/sans';
 import type { Metadata } from 'next';
 

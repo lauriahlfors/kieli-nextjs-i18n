@@ -1,7 +1,6 @@
 'use client';
 
-import { i18nConfig } from '@/i18n';
-import redirectToLocale from '@/lib/i18n/redirectToLocale';
+import { i18nConfig, Locale } from '@/i18n';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
@@ -9,6 +8,25 @@ import { useState } from 'react';
 interface Props {
   message: string;
 }
+
+const redirectToLocale = (locale: Locale, pathname: string) => {
+  // If pathname is not found, return "/" as the redirection path.
+  if (!pathname) {
+    return '/';
+  }
+
+  // Split pathaname as substrings in to an array, using "/" as a pattern.
+  const pathParts = pathname.split('/');
+
+  // Set the array index 1 as the locale, this position contains the locale.
+  pathParts[1] = locale;
+
+  // Join the locale with "/" to get a valid URL path (/en, /fi etc...).
+  const url = pathParts.join('/');
+
+  // Return with locale.
+  return url;
+};
 
 export default function LocaleSelector({ message }: Props) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -20,6 +38,7 @@ export default function LocaleSelector({ message }: Props) {
       english: 'English',
     },
     fi: { native: 'Suomi', english: 'Finnish' },
+    fr: { native: 'Français', english: 'French' },
   };
 
   return (

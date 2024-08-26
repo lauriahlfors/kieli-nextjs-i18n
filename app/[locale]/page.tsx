@@ -1,11 +1,11 @@
 import { Locale } from '@/i18n';
-import getTranslation from '@/lib/i18n/getTranslation';
+import { getTranslation } from '@/lib/i18n/getTranslation';
 
 type Props = {
   params: { locale: Locale };
 };
 
-export default async function Page({ params }: Props) {
+export default async function ServerSidePage({ params }: Props) {
   const translation = await getTranslation(params.locale);
 
   return (
