@@ -1,0 +1,13 @@
+{
+  "nav": {
+    "locale-selector": {
+      "message": "Choisissez une langue."
+    }
+  },
+  "views": {
+    "home": {
+      "title": "Bonjour le monde!",
+      "body": "Ce site devrait être maintenant en anglais, vous devriez pouvoir lire ce texte, si vous comprenez le français."
+    }
+  }
+}
