@@ -3,7 +3,7 @@ import { ObjectKeys } from '../utils/objectKeys';
 import { loadTranslation, TranslationObject } from './loadTranslation';
 
 // Defines a function type that takes a key of type ObjectKeys from TranslationObject and retruns a string.
-type TranslationKey = (key: ObjectKeys<TranslationObject>) => string;
+export type TranslationKey = (key: ObjectKeys<TranslationObject>) => string;
 
 // Defines a object type with array of string keys that can be of type string or a iteration type of itself.
 type TranslationKeyValue = {
