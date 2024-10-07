@@ -1,6 +1,6 @@
 {
   "nav": {
-    "locale-selector": {
+    "localeSelector": {
       "message": "Choisissez une langue."
     }
   },
