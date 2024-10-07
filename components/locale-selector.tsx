@@ -33,23 +33,21 @@ export default function LocaleSelector({ message }: Props) {
   const pathname = usePathname();
 
   const localeInfo = {
-    en: {
-      native: 'English',
-      english: 'English',
-    },
-    fi: { native: 'Suomi', english: 'Finnish' },
-    fr: { native: 'Français', english: 'French' },
+    en: { native: 'English', default: 'English' },
+    fi: { native: 'Suomi', default: 'Finnish' },
+    fr: { native: 'Français', default: 'French' },
   };
 
   return (
     <>
+      {/* Language button. */}
       <button
         className={`flex h-12 w-12 items-center justify-center rounded-lg hover:bg-neutral-100 ${
           isOpen ? 'bg-neutral-100' : ''
         } `}
         onClick={() => setIsOpen(!isOpen)}
       >
-        <GlobeIcon />
+        <LanguageIcon />
       </button>
 
       {isOpen && (
@@ -59,6 +57,7 @@ export default function LocaleSelector({ message }: Props) {
               <h1 className="text-md font-medium">{message}</h1>
             </div>
             <ul className="flex w-full flex-col divide-y divide-neutral-200">
+              {/* List all the available locales. */}
               {i18nConfig.locales.map((locale, index) => {
                 return (
                   <Link key={index} href={redirectToLocale(locale, pathname)}>
@@ -67,7 +66,7 @@ export default function LocaleSelector({ message }: Props) {
                         {localeInfo[locale].native}
                       </h2>
                       <p className="text-xs text-neutral-600">
-                        {localeInfo[locale].english}
+                        {localeInfo[locale].default}
                       </p>
                     </li>
                   </Link>
@@ -81,7 +80,7 @@ export default function LocaleSelector({ message }: Props) {
   );
 }
 
-function GlobeIcon() {
+function LanguageIcon() {
   return (
     <>
       {/* Trabslation SVG icon, sourced from: https://heroicons.com/ */}
