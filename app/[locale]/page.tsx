@@ -1,12 +1,14 @@
 import { Locale } from '@/i18n';
-import getTranslation from '@/lib/i18n/getTranslation';
+import { getTranslation } from '@/lib/i18n/getTranslation';
 
 type Props = {
-  params: { locale: Locale };
+  params: {
+    locale: Locale;
+  };
 };
 
-export default async function Page({ params }: Props) {
-  const translation = await getTranslation(params.locale);
+export default async function ServerSidePage({ params: { locale } }: Props) {
+  const translation = await getTranslation(locale);
 
   return (
     <section className="flex h-96 flex-col items-center justify-center gap-4">

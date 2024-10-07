@@ -1,41 +1,36 @@
-import { Locale, i18nConfig } from '@/i18n';
+import { i18nConfig, Locale } from '@/i18n';
 import { match } from '@formatjs/intl-localematcher';
 import Negotiator from 'negotiator';
 import { NextRequest } from 'next/server';
 
 /**
- * Get best matching locale based on available client and app/server locales.
- * @param request
- * @returns
+ * Determines the best matching locale based on the user's preferred languages.
+ * Uses the Accept-Language header from the request, matches it against
+ * available app locales, and returns the best match or the default locale.
  */
-export function getMatchingLocale(request: NextRequest): Locale {
-  // Initialize user headers object.
-  let userHeaders: Record<string, string> = {};
+export const getMatchingLocale = (request: NextRequest): Locale => {
+  // Extract the Accept-Language header from the request
+  const acceptLanguage = request.headers.get('Accept-Language');
 
-  // Fill user headers object with headers from the request.
-  request.headers.forEach(
-    (headerValue, headerKey) => (userHeaders[headerKey] = headerValue)
+  // Initialize a Negotiator instance with the Accept-Language header to
+  // get the list of user's preferred locales.
+  const userLocales = new Negotiator({
+    headers: { 'accept-language': acceptLanguage || '' },
+  }).languages();
+
+  // Prepare the list of locales available in the app
+  const appLocales: string[] = i18nConfig.locales.map(
+    (locale: Locale) => locale
   );
 
-  // Get all availabl locales from the client.
-  const clientLocales = new Negotiator({ headers: userHeaders }).languages();
-
-  // Initialize app/server locales object.
-  let appLocales: Locale[] = [];
-
-  // Fill app/server locales with locales from the i18n config.
-  i18nConfig.locales.forEach((locale: Locale) => {
-    appLocales.push(locale);
-  });
-
-  // Call match function from intl-localematcher and get best matching locale
-  // based on available client locales, app/server locales and app/server default locale.
+  // Match the user's locales against the app's locales to find the best match
+  // If no match is found, use the default locale
   const localeMatch: Locale = match(
-    clientLocales,
+    userLocales,
     appLocales,
     i18nConfig.defaultLocale
   ) as Locale;
 
-  // Return matched locale.
+  // Return the best matching locale
   return localeMatch;
-}
+};

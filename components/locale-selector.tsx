@@ -1,7 +1,6 @@
 'use client';
 
-import { i18nConfig } from '@/i18n';
-import redirectToLocale from '@/lib/i18n/redirectToLocale';
+import { i18nConfig, Locale } from '@/i18n';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
@@ -10,27 +9,45 @@ interface Props {
   message: string;
 }
 
+const redirectToLocale = (locale: Locale, pathname: string) => {
+  // If pathname is not found, return "/" as the redirection path.
+  if (!pathname) {
+    return '/';
+  }
+
+  // Split pathaname as substrings in to an array, using "/" as a pattern.
+  const pathParts = pathname.split('/');
+
+  // Set the array index 1 as the locale, this position contains the locale.
+  pathParts[1] = locale;
+
+  // Join the locale with "/" to get a valid URL path (/en, /fi etc...).
+  const url = pathParts.join('/');
+
+  // Return with locale.
+  return url;
+};
+
 export default function LocaleSelector({ message }: Props) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const pathname = usePathname();
 
   const localeInfo = {
-    en: {
-      native: 'English',
-      english: 'English',
-    },
-    fi: { native: 'Suomi', english: 'Finnish' },
+    en: { native: 'English', default: 'English' },
+    fi: { native: 'Suomi', default: 'Finnish' },
+    fr: { native: 'Français', default: 'French' },
   };
 
   return (
     <>
+      {/* Language button. */}
       <button
         className={`flex h-12 w-12 items-center justify-center rounded-lg hover:bg-neutral-100 ${
           isOpen ? 'bg-neutral-100' : ''
         } `}
         onClick={() => setIsOpen(!isOpen)}
       >
-        <GlobeIcon />
+        <LanguageIcon />
       </button>
 
       {isOpen && (
@@ -40,6 +57,7 @@ export default function LocaleSelector({ message }: Props) {
               <h1 className="text-md font-medium">{message}</h1>
             </div>
             <ul className="flex w-full flex-col divide-y divide-neutral-200">
+              {/* List all the available locales. */}
               {i18nConfig.locales.map((locale, index) => {
                 return (
                   <Link key={index} href={redirectToLocale(locale, pathname)}>
@@ -48,7 +66,7 @@ export default function LocaleSelector({ message }: Props) {
                         {localeInfo[locale].native}
                       </h2>
                       <p className="text-xs text-neutral-600">
-                        {localeInfo[locale].english}
+                        {localeInfo[locale].default}
                       </p>
                     </li>
                   </Link>
@@ -62,7 +80,7 @@ export default function LocaleSelector({ message }: Props) {
   );
 }
 
-function GlobeIcon() {
+function LanguageIcon() {
   return (
     <>
       {/* Trabslation SVG icon, sourced from: https://heroicons.com/ */}
